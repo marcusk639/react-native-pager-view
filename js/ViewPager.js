@@ -84,6 +84,7 @@ function getViewManagerConfig(viewManagerName) {
 
 class ViewPager extends React.Component<ViewPagerProps> {
   isScrolling = false;
+  viewPagerRef;
 
   componentDidMount() {
     // On iOS we do it directly on the native side
@@ -97,7 +98,7 @@ class ViewPager extends React.Component<ViewPagerProps> {
   /* $FlowFixMe(>=0.78.0 site=react_native_android_fb) This issue was found
    * when making Flow check .android.js files. */
   getInnerViewNode = (): ReactComponent => {
-    return this.refs[VIEW_PAGER_REF].getInnerViewNode();
+    return this.viewPagerRef.getInnerViewNode();
   };
 
   _onPageScroll = (e: PageScrollEvent) => {
@@ -173,7 +174,9 @@ class ViewPager extends React.Component<ViewPagerProps> {
     return (
       <NativeViewPager
         {...this.props}
-        ref={VIEW_PAGER_REF}
+        ref={(ref) => {
+          this.viewPagerRef = ref;
+        }}
         style={this.props.style}
         onPageScroll={this._onPageScroll}
         onPageScrollStateChanged={this._onPageScrollStateChanged}
